@@ -63,6 +63,15 @@ def getLevels():
 
     return rows
 
+def getProgressLevels():
+    sqlite_select_table_query = "SELECT * FROM levels WHERE status='In progress'"
+
+    cursor.execute(sqlite_select_table_query)
+    rows = cursor.fetchall()
+    sqlite_connection.commit()
+
+    return rows
+
 
 def getContent(id):
     sqlite_select_table_query = "SELECT content FROM levels WHERE id=" + str(id)
@@ -72,3 +81,34 @@ def getContent(id):
     sqlite_connection.commit()
 
     return rows[0][0]
+
+def getStatus(id):
+    sqlite_select_table_query = "SELECT status FROM levels WHERE id=" + str(id)
+
+    cursor.execute(sqlite_select_table_query)
+    rows = cursor.fetchall()
+    sqlite_connection.commit()
+
+    return rows[0][0]
+def getProgress(id):
+    sqlite_select_table_query = "SELECT progress FROM levels WHERE id=" + str(id)
+
+    cursor.execute(sqlite_select_table_query)
+    rows = cursor.fetchall()
+    sqlite_connection.commit()
+
+    return rows[0][0]
+
+def setProgress(id, progress):
+    sqlite_select_table_query = "UPDATE levels set progress=?, status='In progress' WHERE id=?"
+
+    cursor.execute(sqlite_select_table_query, (progress, id))
+    rows = cursor.fetchall()
+    sqlite_connection.commit()
+
+def deleteProgress(id):
+    sqlite_select_table_query = "UPDATE levels set progress=NULL, status='Not start' WHERE id=?"
+
+    cursor.execute(sqlite_select_table_query, (id,))
+    rows = cursor.fetchall()
+    sqlite_connection.commit()
